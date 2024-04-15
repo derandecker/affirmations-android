@@ -62,21 +62,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AffirmationsApp() {
-    AffirmationList(
-        affirmationList = Datasource().loadAffirmations(),
-    )
+    /*TODO*/
 }
 
 @Composable
-fun AffirmationList(affirmationList: List<Affirmation>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
-        items(affirmationList) { affirmation ->
-            AffirmationCard(
-                affirmation = affirmation,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
-    }
+fun AffirmationList() {
+    /* TODO */
 }
 
 @Composable
@@ -92,7 +83,7 @@ fun AffirmationCard(affirmation: Affirmation, modifier: Modifier = Modifier) {
                 contentScale = ContentScale.Crop
             )
             Text(
-                text = LocalContext.current.getString(affirmation.stringResourceId),
+                text = stringResource(id = affirmation.stringResourceId),//LocalContext.current.getString(affirmation.stringResourceId),
                 modifier = Modifier.padding(16.dp),
                 style = MaterialTheme.typography.headlineSmall
             )
