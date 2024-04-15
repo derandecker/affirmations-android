@@ -21,23 +21,25 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.affirmations.data.Datasource
 import com.example.affirmations.model.Affirmation
 import com.example.affirmations.ui.theme.AffirmationsTheme
@@ -62,30 +64,50 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AffirmationsApp() {
-    /*TODO*/
+    Column {
+        Text(
+            text = "Affirmation List",
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Black
+        )
+        AffirmationList(
+            affirmationList = Datasource().loadAffirmations()
+        )
+    }
 }
 
 @Composable
-fun AffirmationList() {
-    /* TODO */
+fun AffirmationList(affirmationList: List<Affirmation>, modifier: Modifier = Modifier) {
+    LazyVerticalGrid(columns = GridCells.Adaptive(100.dp)) {
+        items(affirmationList.size) { affirmation ->
+            AffirmationCard(
+                affirmation = affirmationList[affirmation],
+                modifier = Modifier.padding(8.dp),
+            )
+        }
+    }
 }
 
 @Composable
 fun AffirmationCard(affirmation: Affirmation, modifier: Modifier = Modifier) {
-    Card(modifier = modifier) {
-        Column {
+    Card(modifier = modifier.fillMaxSize()) {
+        Column() {
             Image(
                 painter = painterResource(affirmation.imageResourceId),
                 contentDescription = stringResource(affirmation.stringResourceId),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(194.dp),
+                    .fillMaxSize()
+                    .height(110.dp),
                 contentScale = ContentScale.Crop
             )
             Text(
                 text = stringResource(id = affirmation.stringResourceId),//LocalContext.current.getString(affirmation.stringResourceId),
                 modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.headlineSmall,
+                maxLines = 2,
+//                minLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
